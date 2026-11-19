@@ -144,7 +144,17 @@
     });
   }, { threshold: 0.15, rootMargin: '40px' });
 
-  popHeadings.forEach(h => popObserver.observe(h));
+  popHeadings.forEach(h => {
+    if (h.closest('#hero')) {
+      // Immediately activate hero kinetic typography without waiting for observer
+      requestAnimationFrame(() => {
+        h.classList.add('is-pop-visible');
+        h.removeAttribute('data-pop-ready');
+      });
+    } else {
+      popObserver.observe(h);
+    }
+  });
 
   /* ==========================================================================
      3. Line Mask & Staggered Reveal Engine
@@ -163,8 +173,21 @@
     });
   }, { threshold: 0.12, rootMargin: '50px' });
 
-  revealLineElements.forEach(el => revealObserver.observe(el));
-  revealFadeElements.forEach(el => revealObserver.observe(el));
+  revealLineElements.forEach(el => {
+    if (el.closest('#hero')) {
+      requestAnimationFrame(() => el.classList.add('is-revealed'));
+    } else {
+      revealObserver.observe(el);
+    }
+  });
+
+  revealFadeElements.forEach(el => {
+    if (el.closest('#hero')) {
+      requestAnimationFrame(() => el.classList.add('is-revealed'));
+    } else {
+      revealObserver.observe(el);
+    }
+  });
 
   // Stagger cascade cards by parent sibling index
   const cascadeParents = new Set(cascadeCardElements.map(c => c.parentElement));
@@ -259,15 +282,26 @@
   }
 
   /* ==========================================================================
-     6. Showreel 3D Card Stack Engine (Lag-Free GPU & Dormant RAF Loop)
+     6. Showreel 3D Card Stack Engine (High-Performance GPU Pipeline)
      ========================================================================== */
-  const onScrollMeasure = () => {
-    if (!reelTrack) return;
-    const rect = reelTrack.getBoundingClientRect();
-    const travel = Math.max(1, reelTrack.offsetHeight - window.innerHeight);
-    const scrolled = -rect.top;
-    const rawProgress = scrolled / travel;
-    targetReelProgress = Math.max(0, Math.min(1, rawProgress));
+  let cachedReelTop = 0;
+  let cachedReelTravel = 1;
+  let cachedAboutTop = 0;
+  let cachedAboutHeight = 1;
+  let cachedTotalHeight = 1;
+
+  const measureLayout = () => {
+    if (reelTrack) {
+      const rect = reelTrack.getBoundingClientRect();
+      cachedReelTop = window.scrollY + rect.top;
+      cachedReelTravel = Math.max(1, reelTrack.offsetHeight - window.innerHeight);
+    }
+    if (aboutStory) {
+      const rect = aboutStory.getBoundingClientRect();
+      cachedAboutTop = window.scrollY + rect.top;
+      cachedAboutHeight = Math.max(1, aboutStory.offsetHeight);
+    }
+    cachedTotalHeight = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
   };
 
   const updateReelStack = progress => {
@@ -350,56 +384,19 @@
     if (deckProgressBar) {
       deckProgressBar.style.width = `${((activeReelIndex + 1) / count) * 100}%`;
     }
-
-    
-  };
-
-  // High-performance RAF loop that sleeps when idle
-  const reelRenderLoop = () => {
-    // If showreel section is far out of viewport, stop RAF and pause active video
-    if (reelTrack) {
-      const rect = reelTrack.getBoundingClientRect();
-      if (rect.bottom < -150 || rect.top > window.innerHeight + 150) {
-        isReelLoopRunning = false;
-        reelRafId = null;
-        // Pause active video when section is not visible
-        const currentVideo = reelCards[activeReelIndex]?.querySelector('video');
-        if (currentVideo && !currentVideo.paused) currentVideo.pause();
-        return;
-      }
-    }
-
-    const delta = targetReelProgress - currentReelProgress;
-    if (Math.abs(delta) < 0.0003) {
-      currentReelProgress = targetReelProgress;
-      updateReelStack(currentReelProgress);
-      isReelLoopRunning = false;
-      reelRafId = null;
-      return; // Sleep! 0% CPU overhead while user is reading
-    }
-
-    currentReelProgress += delta * 0.16;
-    updateReelStack(currentReelProgress);
-    reelRafId = requestAnimationFrame(reelRenderLoop);
-  };
-
-  const wakeReelLoop = () => {
-    if (!isReelLoopRunning) {
-      isReelLoopRunning = true;
-      reelRafId = requestAnimationFrame(reelRenderLoop);
-    }
   };
 
   const scrollToCardIndex = idx => {
-    if (!reelTrack) return;
+    if (!reelTrack || !reelCards.length) return;
     const count = reelCards.length;
     const clamped = Math.max(0, Math.min(count - 1, idx));
-    const travel = Math.max(1, reelTrack.offsetHeight - window.innerHeight);
     const fraction = clamped / Math.max(1, count - 1);
-    targetReelProgress = fraction;
-    const targetScroll = reelTrack.offsetTop + (fraction * travel);
-    window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-    wakeReelLoop();
+    const targetScroll = cachedReelTop + (fraction * cachedReelTravel);
+    if (lenisInstance) {
+      lenisInstance.scrollTo(targetScroll, { duration: 0.9 });
+    } else {
+      window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+    }
   };
 
   if (deckPrevBtn) {
@@ -470,32 +467,39 @@
   });
 
   const allAboutWords = [...document.querySelectorAll('.about-word')];
+  let lastLitIndex = -1;
+  let lastAboutImgIdx = -1;
 
-  const updateAboutSection = () => {
-    if (!aboutStory) return;
-    const rect = aboutStory.getBoundingClientRect();
-    const storyHeight = aboutStory.offsetHeight;
+  const updateAboutSection = scrollY => {
+    if (!aboutStory || !allAboutWords.length) return;
     const windowHeight = window.innerHeight;
+    const relTop = cachedAboutTop - scrollY;
 
-    if (rect.top <= windowHeight && rect.bottom >= 0) {
-      const progress = Math.max(0, Math.min(1, (windowHeight - rect.top) / (storyHeight + windowHeight * 0.3)));
+    if (relTop <= windowHeight && (relTop + cachedAboutHeight) >= 0) {
+      const progress = Math.max(0, Math.min(1, (windowHeight - relTop) / (cachedAboutHeight + windowHeight * 0.3)));
       const totalWords = allAboutWords.length;
       const litIndex = Math.floor(progress * totalWords * 1.35);
 
-      allAboutWords.forEach((word, idx) => {
-        word.classList.toggle('is-lit', idx <= litIndex);
-      });
+      if (litIndex !== lastLitIndex) {
+        lastLitIndex = litIndex;
+        for (let idx = 0; idx < totalWords; idx++) {
+          allAboutWords[idx].classList.toggle('is-lit', idx <= litIndex);
+        }
+      }
 
       const imgIdx = Math.min(2, Math.floor(progress * 3));
-      aboutImages.forEach((img, i) => {
-        img.style.opacity = i === imgIdx ? '1' : '0';
-      });
+      if (imgIdx !== lastAboutImgIdx) {
+        lastAboutImgIdx = imgIdx;
+        aboutImages.forEach((img, i) => {
+          img.style.opacity = i === imgIdx ? '1' : '0';
+        });
 
-      if (aboutCaption && aboutCaptions[imgIdx]) {
-        aboutCaption.textContent = aboutCaptions[imgIdx];
-      }
-      if (aboutCount) {
-        aboutCount.textContent = `0${imgIdx + 1} / 03`;
+        if (aboutCaption && aboutCaptions[imgIdx]) {
+          aboutCaption.textContent = aboutCaptions[imgIdx];
+        }
+        if (aboutCount) {
+          aboutCount.textContent = `0${imgIdx + 1} / 03`;
+        }
       }
     }
   };
@@ -626,7 +630,7 @@
       }
     }, { passive: true });
 
-    // Wheel Event Handler: Smooth translation, non-blocking at boundaries
+    // Wheel Event Handler: Seamless non-blocking vertical scroll, smooth pan on shift-wheel or trackpad
     filmstripViewport.addEventListener('wheel', e => {
       const maxScroll = getMaxScroll();
       if (maxScroll <= 0) return;
@@ -640,19 +644,14 @@
         return;
       }
 
-      const delta = e.deltaY;
-      const atStart = targetScroll <= 2 && delta < 0;
-      const atEnd = targetScroll >= maxScroll - 2 && delta > 0;
-
-      // At limits: allow normal page scrolling! Do NOT lock the user!
-      if (atStart || atEnd) {
-        return;
+      // If user holds Shift while wheeling, pan horizontal gallery
+      if (e.shiftKey) {
+        e.preventDefault();
+        targetScroll += e.deltaY * 1.25;
+        targetScroll = Math.max(0, Math.min(maxScroll, targetScroll));
+        startAnimationLoop();
       }
-
-      e.preventDefault();
-      targetScroll += delta * 1.25;
-      targetScroll = Math.max(0, Math.min(maxScroll, targetScroll));
-      startAnimationLoop();
+      // Otherwise: let vertical wheel scroll freely down the page!
     }, { passive: false });
 
     // Pointer Drag Engine (Desktop Mouse + Touch + Stylus)
@@ -833,17 +832,16 @@
   });
 
   /* ==========================================================================
-     10. Top Scroll Progress Bar Calculator
+     10. Top Scroll Progress Bar Calculator (GPU Transform scaleX)
      ========================================================================== */
-  const updateScrollProgress = () => {
+  const updateScrollProgress = scrollY => {
     if (!scrollProgressBar) return;
-    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-    if (totalHeight <= 0) {
-      scrollProgressBar.style.width = '0%';
+    if (cachedTotalHeight <= 0) {
+      scrollProgressBar.style.transform = 'scaleX(0)';
       return;
     }
-    const percent = Math.min(100, Math.max(0, (window.scrollY / totalHeight) * 100));
-    scrollProgressBar.style.width = `${percent}%`;
+    const ratio = Math.min(1, Math.max(0, scrollY / cachedTotalHeight));
+    scrollProgressBar.style.transform = `scaleX(${ratio})`;
   };
 
   /* ==========================================================================
@@ -1004,10 +1002,16 @@
   /* ==========================================================================
      15. Smooth Back-to-Top & Anchor Links Navigation
      ========================================================================== */
+  let lenisInstance = null;
+
   if (backToTopBtn) {
     backToTopBtn.addEventListener('click', e => {
       e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (lenisInstance) {
+        lenisInstance.scrollTo(0, { duration: 1.2 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     });
   }
 
@@ -1019,41 +1023,75 @@
       if (targetEl) {
         e.preventDefault();
         const targetY = targetEl.getBoundingClientRect().top + window.scrollY - 70;
-        window.scrollTo({ top: targetY, behavior: 'smooth' });
+        if (lenisInstance) {
+          lenisInstance.scrollTo(targetY, { duration: 1.1 });
+        } else {
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        }
       }
     });
   });
 
   /* ==========================================================================
-     16. Global Window Scroll & Resize (Throttled via requestAnimationFrame)
+     16. Lenis Smooth Scroll Engine & Global Scroll Coordinator
      ========================================================================== */
-  let isScrollTicking = false;
-  window.addEventListener('scroll', () => {
-    if (!isScrollTicking) {
-      requestAnimationFrame(() => {
-        onScrollMeasure();
-        wakeReelLoop();
-        updateAboutSection();
-        updateScrollProgress();
-        isScrollTicking = false;
-      });
-      isScrollTicking = true;
+  const onScroll = scrollY => {
+    if (reelTrack) {
+      const scrolled = scrollY - cachedReelTop;
+      const progress = Math.max(0, Math.min(1, scrolled / cachedReelTravel));
+      updateReelStack(progress);
     }
-  }, { passive: true });
+    updateAboutSection(scrollY);
+    updateScrollProgress(scrollY);
+  };
+
+  // Initialize Lenis Smooth Scrolling Engine
+  if (typeof Lenis !== 'undefined') {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReducedMotion) {
+      lenisInstance = new Lenis({
+        lerp: 0.09,
+        smoothWheel: true,
+        wheelMultiplier: 1.0,
+        touchMultiplier: 1.5,
+        infinite: false,
+      });
+
+      function lenisRaf(time) {
+        lenisInstance.raf(time);
+        requestAnimationFrame(lenisRaf);
+      }
+      requestAnimationFrame(lenisRaf);
+
+      lenisInstance.on('scroll', e => {
+        onScroll(e.scroll);
+      });
+    }
+  }
+
+  // Fallback for native scroll if Lenis is not active
+  if (!lenisInstance) {
+    let isScrollTicking = false;
+    window.addEventListener('scroll', () => {
+      if (!isScrollTicking) {
+        requestAnimationFrame(() => {
+          onScroll(window.scrollY);
+          isScrollTicking = false;
+        });
+        isScrollTicking = true;
+      }
+    }, { passive: true });
+  }
 
   window.addEventListener('resize', () => {
-    onScrollMeasure();
-    wakeReelLoop();
-    updateAboutSection();
+    measureLayout();
+    onScroll(window.scrollY);
     updateFilmstripHUD();
-    updateScrollProgress();
   });
 
   // Initial execution on boot
-  onScrollMeasure();
-  updateReelStack(0);
-  updateAboutSection();
+  measureLayout();
+  onScroll(window.scrollY);
   updateFilmstripHUD();
   updateSoundUI();
-  updateScrollProgress();
 })();
