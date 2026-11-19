@@ -1,0 +1,2381 @@
+/* ==========================================================================
+   VAIBHAV BADOLE — PORTFOLIO STYLESHEET (PERFECT STACK & ZERO BLANK GAPS)
+   --------------------------------------------------------------------------
+   Table of Contents:
+   1. Theme Variables & Global Resets
+   2. Base Typography & Utilities
+   3. Top Scroll Progress Bar
+   4. Floating Glass Island Header & Mobile Drawer
+   5. Hero Section
+   6. Showreel Section (Scroll-Driven 3D Card Stack & Equalizer)
+   7. Custom Follower Cursor (Strictly Scoped)
+   8. Studio Milestones Strip
+   9. About Section (Editorial & Fully Legible)
+   10. Selected Work (Showcase Grid & Filter Chips)
+   11. Creative Pipeline & Methodology (4-Step Grid)
+   12. Tools & Capabilities Bento Grid
+   13. Experience & Services
+   14. Studio FAQ & Inquiry Accordion
+   15. High-Impact Footer & Instant Copy Email
+   16. Responsive Media Queries & Accessibility
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Theme Variables & Global Resets
+   ========================================================================== */
+:root {
+  color-scheme: dark;
+
+  /* Signature Smoked Rust & Warm Terracotta Palette */
+  --base: #161110;       /* Deep smoked espresso rust */
+  --ink: #faf6f0;        /* Warm linen archival white */
+  --plum: #231816;       /* Smoked rust charcoal */
+  --lilac: #f5eee6;      /* Warm oatmeal travertine for high-contrast sections */
+  --coral: #e3593b;      /* Venetian burnt terracotta / vermilion */
+  --coral-deep: #94331e; /* Deep burnt sienna for text on light backgrounds */
+  --butter: #f0b85a;     /* Warm golden amber / raw ochre highlight */
+  --deep: #120c0b;       /* Deep near-black smoked umber for dark text/elements */
+
+  /* Glass & Depth */
+  --glass-bg: rgba(24, 18, 16, 0.86);
+  --glass-border: rgba(250, 246, 240, 0.11);
+  --glass-blur: 16px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-padding-top: 90px;
+}
+
+html,
+body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--base);
+  color: var(--ink);
+  font-family: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ==========================================================================
+   3. Top Scroll Progress Bar
+   ========================================================================== */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--coral), var(--butter));
+  pointer-events: none;
+  transition: width 0.08s linear;
+}
+
+/* ==========================================================================
+   4. Floating Glass Island Header & Mobile Drawer
+   ========================================================================== */
+.site-header {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 1240px;
+  z-index: 999;
+  pointer-events: none;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 22px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(250, 246, 240, 0.08);
+  pointer-events: auto;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-name {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-transform: lowercase;
+}
+
+
+
+
+
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(250, 246, 240, 0.72);
+  letter-spacing: 0.02em;
+  position: relative;
+  padding: 4px 0;
+}
+
+.nav-link:hover {
+  color: var(--butter);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--butter);
+  transition: width 0.25s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+
+.btn-talk {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: var(--butter);
+  color: var(--base);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.btn-talk:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 4px 18px rgba(240, 184, 90, 0.35);
+  background: #fff;
+}
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(250, 246, 240, 0.06);
+  border: 1px solid var(--glass-border);
+  padding: 8px;
+}
+
+.hamburger-line {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--ink);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Mobile Drawer */
+.mobile-drawer {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  background: rgba(24, 18, 16, 0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 24px;
+  display: none;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6);
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.mobile-drawer.is-open {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mobile-nav-link {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(250, 246, 240, 0.08);
+}
+
+.mobile-nav-link:hover {
+  color: var(--butter);
+}
+
+.mobile-drawer-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: rgba(250, 246, 240, 0.5);
+  margin-top: 8px;
+}
+
+/* ==========================================================================
+   5. Hero Section
+   ========================================================================== */
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  background: var(--base);
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.image-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  user-select: none;
+  -webkit-user-drag: none;
+  background: radial-gradient(circle at 60% 40%, #321f1b 0%, var(--base) 70%);
+}
+
+.clean { z-index: 0; }
+.gold-base { z-index: 1; opacity: 0.15; pointer-events: none; }
+
+.scrim {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+      rgba(24, 18, 16, 0.72) 0%,
+      rgba(24, 18, 16, 0.15) 45%,
+      rgba(24, 18, 16, 0.88) 100%);
+}
+
+.content {
+  position: relative;
+  z-index: 3;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 110px clamp(24px, 5vw, 64px) 44px;
+  max-width: 1360px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+
+
+.settings {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+
+
+
+.headline {
+  margin: 28px 0;
+  font-size: clamp(48px, 7.5vw, 108px);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  text-transform: lowercase;
+}
+
+.headline-line {
+  display: block;
+}
+
+.motion-line {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.plus {
+  width: 0.75em;
+  height: 0.75em;
+  border: 1.5px solid var(--butter);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--butter);
+  font-size: 0.45em;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+  padding-top: 24px;
+}
+
+.tagline {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.tagline-highlight {
+  color: var(--butter);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.description {
+  max-width: 580px;
+  width: 100%;
+}
+
+.description p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(250, 246, 240, 0.88);
+}
+
+.footerline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px;
+  font-size: 13.5px;
+  color: rgba(250, 246, 240, 0.65);
+}
+
+.hero-scroll-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--butter);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  /* Calm static link (no bouncing) */
+}
+
+.hero-scroll-cue:hover {
+  color: #fff;
+}
+
+/* ==========================================================================
+   6. Showreel Section (Scroll-Driven 3D Card Stack Gallery & Equalizer)
+   ========================================================================== */
+.showreel-track {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 190vh; /* Smooth, responsive scroll track for 6-card physical 3D stacking with zero dead space */
+  background: var(--base);
+  color: var(--ink);
+}
+
+.reel-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0 clamp(20px, 4vw, 56px);
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+.showreel-controls-bar {
+  width: min(94vw, 1320px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.showreel-controls-bar .panel-kicker {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+
+
+.deck-transport {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(24, 18, 16, 0.88);
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(250, 246, 240, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  pointer-events: auto;
+}
+
+.deck-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: transparent;
+  border: none;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.deck-nav-btn:hover {
+  color: var(--butter);
+  background: rgba(240, 184, 90, 0.18);
+  transform: translateY(-1px);
+}
+
+.deck-counter-badge {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--butter);
+  letter-spacing: 0.08em;
+  padding: 0 8px;
+  min-width: 58px;
+  text-align: center;
+}
+
+.deck-progress-rail {
+  width: min(94vw, 1320px);
+  height: 3px;
+  background: rgba(250, 246, 240, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.deck-progress-fill {
+  height: 100%;
+  width: 16.66%;
+  background: linear-gradient(90deg, var(--coral), var(--butter));
+  border-radius: 999px;
+  transition: width 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.sound-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(24, 18, 16, 0.85);
+  border: 1.5px solid var(--butter);
+  color: var(--butter);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.sound-toggle:hover {
+  background: var(--butter);
+  color: var(--base);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(240, 184, 90, 0.4);
+}
+
+.sound-toggle.is-muted {
+  border-color: rgba(250, 246, 240, 0.25);
+  color: rgba(250, 246, 240, 0.6);
+  background: rgba(24, 18, 16, 0.6);
+}
+
+.sound-wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 14px;
+}
+
+.sound-wave span {
+  width: 2.5px;
+  background: currentColor;
+  border-radius: 2px;
+  /* Calm static sound bars (no jumping) */
+}
+
+.sound-wave span:nth-child(1) { height: 40%; animation-delay: 0s; }
+.sound-wave span:nth-child(2) { height: 95%; animation-delay: 0.2s; }
+.sound-wave span:nth-child(3) { height: 60%; animation-delay: 0.4s; }
+
+.sound-toggle.is-muted .sound-wave span {
+  height: 25%;
+}
+
+.reel-stack {
+  position: relative;
+  width: min(94vw, 1320px);
+  aspect-ratio: 16 / 9;
+  max-height: 72vh;
+  max-height: 72svh;
+  border-radius: 26px;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.reel-card {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 26px;
+  overflow: hidden;
+  background: radial-gradient(circle at 60% 40%, #3a221d 0%, #161110 90%);
+  transform-origin: center bottom;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.75), 0 -8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(250, 246, 240, 0.12);
+  will-change: transform, opacity;
+  /* High-performance: No transition on transform/filter/opacity so JS lerp is buttery 60fps */
+  transition: box-shadow 0.35s ease;
+  pointer-events: auto;
+  cursor: pointer;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.reel-card:hover {
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 0 1.5px rgba(240, 184, 90, 0.45);
+}
+
+.reel-card img,
+.showreel-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 26px;
+}
+
+.reel-card img { z-index: 1; }
+.showreel-video { z-index: 2; opacity: 1; }
+
+.showreel-depth-dimmer {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  border-radius: 26px;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+  transition: opacity 0.2s ease;
+}
+
+.showreel-scrim {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  border-radius: 26px;
+  background: linear-gradient(180deg,
+      rgba(26, 18, 16, 0.65) 0%,
+      rgba(26, 18, 16, 0.15) 40%,
+      rgba(26, 18, 16, 0.88) 100%);
+  pointer-events: none;
+}
+
+.reel-content {
+  position: relative;
+  z-index: 4;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(22px, 3.2vw, 36px) clamp(24px, 3.6vw, 42px);
+  pointer-events: none;
+}
+
+.reel-top,
+.reel-bottom {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.reel-brand {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: rgba(250, 246, 240, 0.8);
+  text-transform: lowercase;
+}
+
+
+
+.reel-center {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin: auto 0;
+}
+
+.reel-title {
+  margin: 0;
+  font-size: clamp(40px, 6.8vw, 104px);
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 0.92;
+  text-transform: lowercase;
+}
+
+
+
+.reel-card:hover 
+
+.reel-bottom {
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.reel-caption {
+  max-width: 360px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: rgba(250, 246, 240, 0.85);
+}
+
+
+.reel-tools-meta {
+  font-family: "Space Mono", monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.05em;
+  color: rgba(250, 246, 240, 0.7);
+}
+
+
+.reel-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+
+
+/* Tab Navigation for Reels (6 Pills) */
+.reel-tabs-nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.reel-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: rgba(24, 18, 16, 0.75);
+  border: 1px solid var(--glass-border);
+  color: rgba(250, 246, 240, 0.75);
+  font-size: 11.5px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.reel-tab-btn:hover {
+  color: var(--ink);
+  background: rgba(24, 18, 16, 0.95);
+  border-color: var(--butter);
+}
+
+.reel-tab-btn.is-active {
+  background: var(--butter);
+  color: var(--base);
+  border-color: var(--butter);
+  box-shadow: 0 4px 14px rgba(240, 184, 90, 0.35);
+}
+
+/* ==========================================================================
+   8. Studio Milestones Strip
+   ========================================================================== */
+.milestones-bar {
+  position: relative;
+  z-index: 10;
+  background: var(--plum);
+  border-top: 1px solid rgba(250, 246, 240, 0.1);
+  border-bottom: 1px solid rgba(250, 246, 240, 0.1);
+  padding: 64px clamp(24px, 5vw, 64px);
+}
+
+.milestones-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.milestone-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px 20px;
+  border-radius: 20px;
+  background: rgba(24, 18, 16, 0.45);
+  border: 1px solid var(--glass-border);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.milestone-item:hover {
+  transform: translateY(-3px);
+  border-color: rgba(240, 184, 90, 0.35);
+}
+
+.milestone-num {
+  font-size: clamp(38px, 4vw, 56px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+
+.milestone-accent {
+  color: var(--butter);
+}
+
+.milestone-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--butter);
+  letter-spacing: 0.02em;
+}
+
+.milestone-desc {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(250, 246, 240, 0.7);
+}
+
+/* ==========================================================================
+   9. About Section (Editorial & Fully Legible)
+   ========================================================================== */
+.about-story {
+  position: relative;
+  z-index: 11;
+  background: var(--lilac);
+  color: var(--deep);
+  padding: 64px clamp(24px, 5vw, 64px) 64px;
+}
+
+.about-pin {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 60px;
+}
+
+.about-copy-column {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.about-topline,
+.about-bottomline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+}
+
+
+
+.about-copy-window {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.about-copy {
+  margin: 0;
+  font-size: clamp(24px, 2.8vw, 38px);
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+  color: var(--deep);
+}
+
+.about-word {
+  display: inline;
+  color: rgba(35, 25, 22, 0.78);
+  transition: color 0.2s ease, font-weight 0.2s ease;
+}
+
+.about-word.is-lit {
+  color: var(--coral-deep);
+  font-weight: 700;
+}
+
+.about-image-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  max-height: 580px;
+  border-radius: 28px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--plum), var(--deep));
+  box-shadow: 0 20px 48px rgba(35, 25, 22, 0.2);
+  margin: 0;
+}
+
+.about-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 28px;
+  transition: opacity 0.5s ease;
+  background: #38231d;
+}
+
+.about-image-note {
+  position: absolute;
+  z-index: 4;
+  inset: auto 24px 20px;
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  background: rgba(24, 18, 16, 0.7);
+  padding: 8px 16px;
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+}
+
+/* ==========================================================================
+   10. Selected Work (Showcase Grid & Filter Chips)
+   ========================================================================== */
+
+
+
+/* ==========================================================================
+   KINETIC CHARACTER REVEAL ANIMATION
+   Inspired by D:\SROLLING_ANIM8N\default\20-kinetic-character-reveal.html
+   ========================================================================== */
+/* ==========================================================================
+   Kinetic Text & Scroll Animation Engine
+   Inspired by D:\SROLLING_ANIM8N\default\20-kinetic-character-reveal.html,
+   24-line-mask-reveal.html, and 03-staggered-cascade-sequential.html
+   ========================================================================== */
+.pop-word {
+  display: inline-flex;
+  overflow: hidden;
+  vertical-align: bottom;
+  margin-right: 0.22em;
+}
+
+.pop-char {
+  display: inline-block;
+  transform: translateY(115%) rotateX(-25deg);
+  opacity: 0;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+  will-change: transform, opacity;
+  transform-origin: bottom center;
+}
+
+[data-pop-ready] .pop-char {
+  transform: translateY(115%) rotateX(-25deg);
+  opacity: 0;
+}
+
+.is-pop-visible .pop-char,
+.is-revealed .pop-char {
+  transform: translateY(0) rotateX(0deg) !important;
+  opacity: 1 !important;
+}
+
+/* Masked Line & Paragraph Reveal (24-line-mask-reveal.html) */
+[data-reveal-line] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+[data-reveal-line].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered Fade Up (02-slide-up-elevation-translate-y.html) */
+[data-reveal-fade] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+[data-reveal-fade].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Cascade Cards (03-staggered-cascade-sequential.html) */
+[data-cascade-card] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+  will-change: opacity, transform;
+}
+
+[data-cascade-card].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.milestone-num {
+  font-variant-numeric: tabular-nums;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+/* ==========================================================================
+   10. Selected Work — 35mm Celluloid Horizontal Filmstrip
+   Inspired by D:\SROLLING_ANIM8N\default\15-horizontal-scroll-track.html & ft-geo-02
+   ========================================================================== */
+.work-panel {
+  position: relative;
+  z-index: 12;
+  background: var(--plum);
+  color: var(--ink);
+  padding: 60px clamp(20px, 4vw, 56px) 60px;
+  overflow: hidden;
+}
+
+.work-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+
+.work-filters {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(24, 18, 16, 0.6);
+  border: 1px solid rgba(250, 246, 240, 0.08);
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.filter-chip {
+  background: transparent;
+  border: none;
+  color: rgba(250, 246, 240, 0.6);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.filter-chip:hover {
+  color: #fff;
+  background: rgba(250, 246, 240, 0.06);
+}
+
+.filter-chip.is-active {
+  color: var(--deep);
+  background: var(--butter);
+  box-shadow: 0 2px 8px rgba(240, 184, 90, 0.25);
+}
+
+.work-controls-cluster {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.filmstrip-nav-hud {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(24, 18, 16, 0.85);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+}
+
+.film-nav-btn {
+  background: transparent;
+  border: none;
+  color: var(--ink);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.film-nav-btn:hover {
+  background: var(--butter);
+  color: var(--base);
+}
+
+.filmstrip-counter {
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  color: rgba(250, 246, 240, 0.7);
+  letter-spacing: 0.08em;
+}
+
+.filmstrip-counter strong {
+  color: var(--butter);
+  font-size: 13px;
+}
+
+/* Horizontal Viewport & Track */
+.filmstrip-viewport {
+  position: relative;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* Removed scroll-behavior: smooth to prevent lag & conflict with RAF lerp engine */
+  cursor: grab;
+  padding: 10px 4px 20px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y pinch-zoom;
+}
+
+.filmstrip-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.filmstrip-viewport.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.filmstrip-viewport.is-dragging .filmstrip-card {
+  pointer-events: none;
+}
+
+.filmstrip-card img,
+.filmstrip-card video {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.filmstrip-track {
+  display: flex;
+  gap: 28px;
+  width: max-content;
+  align-items: stretch;
+}
+
+/* Individual 35mm Celluloid Card */
+.filmstrip-card {
+  flex: 0 0 clamp(320px, 32vw, 440px);
+  width: clamp(320px, 32vw, 440px);
+  min-width: 320px;
+  background: #1a1311;
+  border: 1.5px solid rgba(250, 246, 240, 0.12);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.5);
+  position: relative;
+  cursor: pointer;
+  contain: content;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.filmstrip-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--butter);
+  box-shadow: 0 28px 64px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(240, 184, 90, 0.4);
+}
+
+.filmstrip-card.is-hidden {
+  display: none !important;
+}
+
+/* 35mm Sprocket Header */
+.filmstrip-sprocket-header {
+  background: #0d0807;
+  padding: 8px 16px;
+  border-bottom: 1px solid rgba(250, 246, 240, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.sprocket-film-stock {
+  color: var(--butter);
+  font-weight: 700;
+}
+
+.sprocket-frame-id {
+  color: rgba(250, 246, 240, 0.5);
+}
+
+/* Media Wrapper */
+.film-media-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9.5;
+  min-height: 220px;
+  background: #1f1614;
+  overflow: hidden;
+}
+
+.poster-graphic {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, #301f1b 0%, #161110 100%);
+  z-index: 1;
+  transition: opacity 0.4s ease;
+}
+
+
+
+
+
+.filmstrip-card img,
+.filmstrip-card video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 2;
+  transition: opacity 0.45s ease, transform 0.6s ease;
+}
+
+.filmstrip-card img {
+  opacity: 0.95;
+}
+
+.filmstrip-card video {
+  opacity: 0;
+  z-index: 3;
+}
+
+.filmstrip-card:hover img {
+  opacity: 0.25;
+  transform: scale(1.04);
+}
+
+.filmstrip-card.is-playing video {
+  opacity: 1;
+}
+
+.film-badge-time {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 4;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(24, 18, 16, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  font-size: 11px;
+  font-family: "Space Mono", monospace;
+  color: var(--butter);
+}
+
+.film-play-cue {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(24, 18, 16, 0.85);
+  border: 1px solid rgba(250, 246, 240, 0.12);
+  backdrop-filter: blur(8px);
+  font-size: 10px;
+  font-family: "Space Grotesk", sans-serif;
+  letter-spacing: 0.08em;
+  color: rgba(250, 246, 240, 0.85);
+  transition: all 0.2s ease;
+}
+
+.filmstrip-card:hover .film-play-cue {
+  background: var(--coral);
+  color: var(--ink);
+  border-color: var(--coral);
+}
+
+/* 35mm Celluloid Perforation Sprockets Strip */
+.filmstrip-perforations {
+  height: 14px;
+  background: #0d0807;
+  border-top: 1px solid rgba(250, 246, 240, 0.06);
+  border-bottom: 1px solid rgba(250, 246, 240, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 0 10px;
+}
+
+.filmstrip-perforations span {
+  width: 14px;
+  height: 7px;
+  border-radius: 2px;
+  background: #1f1614;
+  border: 1px solid rgba(250, 246, 240, 0.08);
+}
+
+/* Card Metadata */
+.filmstrip-card .film-meta {
+  padding: 16px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: #1a1311;
+}
+
+.film-meta-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.film-name {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: lowercase;
+}
+
+.film-tag {
+  font-family: "Space Mono", monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--butter);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+.film-role {
+  font-size: 12px;
+  color: rgba(250, 246, 240, 0.75);
+}
+
+.film-tools {
+  font-size: 10.5px;
+  font-family: "Space Mono", monospace;
+  color: var(--butter);
+  text-transform: uppercase;
+}
+
+/* Filmstrip Scrubber Track */
+.filmstrip-progress-bar-wrap {
+  width: 100%;
+  height: 8px;
+  background: rgba(250, 246, 240, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+  margin-top: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease, height 0.2s ease;
+}
+
+.filmstrip-progress-bar-wrap:hover {
+  background: rgba(250, 246, 240, 0.16);
+  height: 10px;
+}
+
+.filmstrip-progress-thumb {
+  height: 100%;
+  background: linear-gradient(90deg, var(--coral), var(--butter));
+  width: 22%;
+  border-radius: 999px;
+  pointer-events: none;
+  box-shadow: 0 0 12px rgba(240, 184, 90, 0.35);
+}
+
+/* ==========================================================================
+   11. Creative Pipeline & Methodology (4-Step Grid)
+   ========================================================================== */
+.pipeline-panel {
+  position: relative;
+  z-index: 13;
+  background: var(--base);
+  padding: 64px clamp(24px, 5vw, 64px) 64px;
+  border-top: 1px solid rgba(250, 246, 240, 0.08);
+}
+
+.pipeline-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.pipeline-header {
+  margin: 28px 0 48px;
+}
+
+.pipeline-header h2 {
+  margin: 0;
+  font-size: clamp(44px, 6.5vw, 88px);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  font-weight: 600;
+  text-transform: lowercase;
+}
+
+.pipeline-subtitle {
+  margin: 14px 0 0;
+  max-width: 600px;
+  font-size: 14.5px;
+  color: rgba(250, 246, 240, 0.7);
+  line-height: 1.6;
+}
+
+.pipeline-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.pipeline-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 30px 24px;
+  border-radius: 24px;
+  background: var(--plum);
+  border: 1px solid var(--glass-border);
+  min-height: 320px;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.pipeline-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(227, 89, 59, 0.4);
+}
+
+.pipeline-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.step-num {
+  font-family: "Space Grotesk", monospace;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--butter);
+}
+
+
+
+.step-title {
+  margin: 0 0 10px;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.step-desc {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgba(250, 246, 240, 0.72);
+  flex-grow: 1;
+}
+
+.step-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(250, 246, 240, 0.1);
+}
+
+.step-tools span {
+  font-size: 11px;
+  font-family: "Space Grotesk", monospace;
+  color: var(--coral);
+}
+
+/* ==========================================================================
+   12. Tools & Capabilities Bento Grid
+   ========================================================================== */
+.tools-panel {
+  position: relative;
+  z-index: 14;
+  background: var(--lilac);
+  color: var(--deep);
+  padding: 64px clamp(24px, 5vw, 64px) 64px;
+}
+
+.tools-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.tools-intro {
+  margin: 28px 0 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 36px;
+  flex-wrap: wrap;
+}
+
+.tools-intro h2 {
+  margin: 0;
+  font-size: clamp(44px, 6.5vw, 88px);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  font-weight: 600;
+  text-transform: lowercase;
+}
+
+.tools-intro p {
+  margin: 0;
+  max-width: 480px;
+  font-size: 15px;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+.tools-bento {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.bento-card {
+  padding: 32px 28px;
+  border-radius: 24px;
+  background: #fff;
+  border: 1px solid rgba(35, 25, 22, 0.1);
+  box-shadow: 0 8px 24px rgba(35, 25, 22, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.bento-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(35, 25, 22, 0.1);
+}
+
+.highlight-bento {
+  background: var(--plum);
+  color: var(--ink);
+  border-color: rgba(240, 184, 90, 0.25);
+}
+
+
+.bento-category {
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--coral-deep);
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+
+.accent-badge {
+  color: var(--butter);
+}
+
+.bento-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.bento-desc {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+.bento-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(35, 25, 22, 0.1);
+}
+
+.highlight-bento .bento-tags {
+  border-top-color: rgba(250, 246, 240, 0.1);
+}
+
+.bento-tags span {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(35, 25, 22, 0.06);
+  color: var(--deep);
+}
+
+.highlight-bento .bento-tags span {
+  background: rgba(250, 246, 240, 0.1);
+  color: var(--ink);
+}
+
+/* ==========================================================================
+   13. Experience & Services
+   ========================================================================== */
+.experience-story {
+  position: relative;
+  z-index: 15;
+  background: var(--coral);
+  color: var(--deep);
+  padding: 64px clamp(24px, 5vw, 64px) 64px;
+}
+
+.experience-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.process-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1.3fr);
+  gap: clamp(32px, 6vw, 80px);
+  margin-top: 28px;
+}
+
+.process-grid h2 {
+  margin: 0;
+  font-size: clamp(44px, 6.5vw, 88px);
+  font-weight: 600;
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  text-transform: lowercase;
+}
+
+.process-list {
+  border-top: 1.5px solid rgba(35, 25, 22, 0.35);
+}
+
+.process-row {
+  display: grid;
+  grid-template-columns: minmax(88px, 0.28fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 20px;
+  padding: 22px 0;
+  border-bottom: 1.5px solid rgba(35, 25, 22, 0.25);
+}
+
+.timeline-years {
+  font-family: "Space Grotesk", monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--deep);
+  padding-top: 4px;
+}
+
+.process-row h3 {
+  margin: 0 0 6px;
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.process-row p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+
+.experience-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-top: 44px;
+  padding-top: 30px;
+  border-top: 1.5px solid rgba(35, 25, 22, 0.35);
+}
+
+.capability-line,
+.education-line {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.capability-line strong,
+.education-line strong {
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.education-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ==========================================================================
+   14. Studio FAQ & Inquiry Accordion
+   ========================================================================== */
+.faq-panel {
+  position: relative;
+  z-index: 16;
+  background: var(--lilac);
+  color: var(--deep);
+  padding: 64px clamp(24px, 5vw, 64px) 64px;
+  border-top: 1px solid rgba(35, 25, 22, 0.1);
+}
+
+.faq-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.faq-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  gap: 60px;
+  margin-top: 32px;
+}
+
+.faq-left h2 {
+  margin: 0;
+  font-size: clamp(44px, 6.5vw, 88px);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  font-weight: 600;
+  text-transform: lowercase;
+}
+
+.faq-subtext {
+  margin: 16px 0 28px;
+  font-size: 15px;
+  line-height: 1.6;
+  opacity: 0.8;
+  max-width: 380px;
+}
+
+.faq-callout {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: rgba(35, 25, 22, 0.06);
+  border: 1px solid rgba(35, 25, 22, 0.1);
+  font-size: 13px;
+}
+
+.faq-callout-link {
+  color: var(--coral-deep);
+  font-weight: 700;
+}
+
+.faq-accordion {
+  display: flex;
+  flex-direction: column;
+  border-top: 1.5px solid rgba(35, 25, 22, 0.25);
+}
+
+.faq-item {
+  border-bottom: 1.5px solid rgba(35, 25, 22, 0.25);
+}
+
+.faq-question {
+  width: 100%;
+  padding: 22px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 17.5px;
+  font-weight: 600;
+  color: var(--deep);
+  text-align: left;
+}
+
+.faq-icon {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--coral-deep);
+  transition: transform 0.3s ease;
+}
+
+.faq-item.is-expanded .faq-icon {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.35s ease, opacity 0.35s ease, padding 0.35s ease;
+}
+
+.faq-item.is-expanded .faq-answer {
+  max-height: 240px;
+  opacity: 1;
+  padding-bottom: 22px;
+}
+
+.faq-answer p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.65;
+  opacity: 0.82;
+}
+
+/* ==========================================================================
+   15. Architectural Footer & Creative Inquiry Atelier
+   Inspired by D:\SROLLING_ANIM8N\default\DEF_FOOTERS\ft-01-kinetic-editorial-monolith.html
+   and ft-02-spatial-glass-command-hub.html
+   ========================================================================== */
+.site-footer {
+  position: relative;
+  z-index: 17;
+  background: #100a09;
+  color: var(--ink);
+  padding: 80px clamp(24px, 5vw, 64px) 40px;
+  border-top: 1px solid rgba(250, 246, 240, 0.1);
+}
+
+.footer-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+/* Top Kicker */
+.footer-top-kicker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(250, 246, 240, 0.08);
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: rgba(250, 246, 240, 0.5);
+  text-transform: uppercase;
+}
+
+.footer-top-kicker span:last-child {
+  color: var(--butter);
+  font-weight: 700;
+}
+
+/* Split Main Stage: Left Manifesto & Right Inquiry Form */
+.footer-hero-stage {
+  margin: 48px 0 64px;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: clamp(40px, 5vw, 72px);
+  align-items: start;
+}
+
+.footer-hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.footer-monolith-heading {
+  margin: 0;
+  font-size: clamp(44px, 5.8vw, 84px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+  text-transform: lowercase;
+}
+
+.footer-hero-manifesto {
+  margin: 0;
+  font-size: clamp(15px, 1.6vw, 19px);
+  line-height: 1.5;
+  color: rgba(250, 246, 240, 0.72);
+  max-width: 520px;
+}
+
+/* Direct Contacts List */
+.footer-direct-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 24px;
+  border-radius: 16px;
+  background: rgba(24, 18, 16, 0.6);
+  border: 1px solid rgba(250, 246, 240, 0.08);
+}
+
+.direct-contact-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.contact-label {
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(250, 246, 240, 0.45);
+}
+
+.contact-email-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.contact-val {
+  font-family: "Space Mono", monospace;
+  font-size: 14px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.contact-val:hover {
+  color: var(--butter);
+}
+
+.contact-val-text {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13.5px;
+  color: rgba(250, 246, 240, 0.85);
+}
+
+.btn-copy-email {
+  background: rgba(240, 184, 90, 0.12);
+  border: 1px solid rgba(240, 184, 90, 0.3);
+  color: var(--butter);
+  font-family: "Space Mono", monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+}
+
+.btn-copy-email:hover {
+  background: var(--butter);
+  color: var(--base);
+}
+
+.copy-toast {
+  font-size: 11.5px;
+  color: var(--butter);
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  font-family: "Space Mono", monospace;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.copy-toast.is-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Right Column: High-End Contact Form Card */
+.footer-form-card {
+  background: #181110;
+  border: 1.5px solid rgba(240, 184, 90, 0.24);
+  border-radius: 24px;
+  padding: 32px 28px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(250, 246, 240, 0.08);
+}
+
+.form-kicker {
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--butter);
+  text-transform: uppercase;
+}
+
+.form-sub {
+  font-size: 12.5px;
+  color: rgba(250, 246, 240, 0.6);
+}
+
+.inquiry-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-row-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.form-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-field-label {
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(250, 246, 240, 0.65);
+}
+
+/* Scope Selection Pills */
+.form-scope-pills {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.form-scope-btn {
+  background: rgba(24, 18, 16, 0.8);
+  border: 1px solid rgba(250, 246, 240, 0.12);
+  color: rgba(250, 246, 240, 0.75);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.form-scope-btn:hover {
+  border-color: rgba(240, 184, 90, 0.4);
+  color: #fff;
+}
+
+.form-scope-btn.is-active {
+  background: var(--butter);
+  color: var(--base);
+  border-color: var(--butter);
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(240, 184, 90, 0.25);
+}
+
+/* Inputs, Selects, and Textarea */
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  background: rgba(22, 17, 16, 0.85);
+  border: 1px solid rgba(250, 246, 240, 0.14);
+  border-radius: 10px;
+  padding: 11px 14px;
+  color: #fff;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: rgba(250, 246, 240, 0.35);
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: var(--butter);
+  box-shadow: 0 0 0 3px rgba(240, 184, 90, 0.15);
+}
+
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23f0b85a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  cursor: pointer;
+}
+
+.form-select option {
+  background: #181110;
+  color: #fff;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.5;
+}
+
+/* Submit Button & Feedback */
+.form-submit-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.btn-submit-inquiry {
+  background: var(--butter);
+  color: var(--base);
+  border: none;
+  border-radius: 10px;
+  padding: 13px 24px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-submit-inquiry:hover {
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(240, 184, 90, 0.3);
+}
+
+.btn-submit-inquiry:active {
+  transform: translateY(0);
+}
+
+.form-feedback {
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  flex: 1;
+  min-width: 200px;
+}
+
+.form-feedback.is-success {
+  color: var(--butter);
+}
+
+.form-feedback.is-error {
+  color: var(--coral);
+}
+
+/* 4-Column Colophon & Sitemap */
+.footer-colophon-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1.1fr 1.1fr 1fr;
+  gap: clamp(24px, 4vw, 48px);
+  padding: 48px 0;
+  border-top: 1px solid rgba(250, 246, 240, 0.08);
+  border-bottom: 1px solid rgba(250, 246, 240, 0.08);
+}
+
+.colophon-title {
+  display: block;
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--butter);
+  margin-bottom: 16px;
+}
+
+.colophon-text {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgba(250, 246, 240, 0.65);
+}
+
+.colophon-list,
+.colophon-social-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+  color: rgba(250, 246, 240, 0.75);
+}
+
+.colophon-list a,
+.colophon-social-links a {
+  color: rgba(250, 246, 240, 0.75);
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.colophon-list a:hover,
+.colophon-social-links a:hover {
+  color: var(--butter);
+  transform: translateX(3px);
+}
+
+/* Baseline Strip */
+.footer-baseline-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding-top: 24px;
+  font-size: 12px;
+  color: rgba(250, 246, 240, 0.45);
+  flex-wrap: wrap;
+}
+
+.baseline-left {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.back-top {
+  color: var(--butter);
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: rgba(240, 184, 90, 0.12);
+  border: 1px solid rgba(240, 184, 90, 0.28);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-top:hover {
+  background: var(--butter);
+  color: var(--base);
+  transform: translateY(-2px);
+}
+
+/* Responsive Media Queries */
+@media (max-width: 1024px) {
+  .footer-hero-stage {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .footer-colophon-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .form-row-2col {
+    grid-template-columns: 1fr;
+  }
+  .form-scope-pills {
+    grid-template-columns: 1fr;
+  }
+  .footer-colophon-grid {
+    grid-template-columns: 1fr;
+  }
+  .footer-form-card {
+    padding: 24px 20px;
+  }
+}
